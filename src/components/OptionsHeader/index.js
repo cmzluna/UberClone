@@ -1,58 +1,95 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import {FlatList} from 'react-native';
 import Styles from './styles';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {GOOGLE_API_KEY} from 'env.json';
+import {setOrigin} from 'src/redux/slices/navigation/navSlice';
+import {validateObject} from 'src/utils';
+import {selectOrigin} from 'src/redux/slices/navigation/selectors/selectOrigin';
+import GooglePlacesInput from '../GooglePlacesInput';
 
 const data = [
   {
     id: '1',
     title: 'Take ride',
-    image: 'https://links.papareact.com/3pn',
+    image: require('../../assets/car.png'),
     screen: 'MapScreen',
   },
 
   {
     id: '2',
     title: 'Order food',
-    image: 'https://links.papareact.com/28w',
+    image: require('../../assets/food.png'),
     screen: 'EatsScreen',
   },
 ];
 
 const OptionsHeader = () => {
   const {navigate} = useNavigation();
+  const dispatch = useDispatch();
+  const origin = useSelector(selectOrigin);
+  const {description} = origin;
+  const {
+    location: {lng, lat},
+  } = origin;
+
+  const isDisabled =
+    !Object.keys(origin).length || !description || !lng || !lat;
+
   const handlePress = screen => {
     navigate(screen);
   };
 
-  const renderOptions = ({item}) => (
-    <Styles.Wrapper onPress={() => handlePress(item.screen)}>
-      {({pressed}) => (
-        <Styles.InnerWrapper pressed={pressed}>
-          <Styles.ImageComp source={{uri: item.image}} resizeMode="contain" />
-          <Styles.TextComp>{item.title}</Styles.TextComp>
-          <Styles.IconComp name="right" type="antdesign" />
-        </Styles.InnerWrapper>
-      )}
-    </Styles.Wrapper>
-  );
+  const handleDispatch = (data, details = null) => {
+    const {
+      geometry: {location = {}},
+    } = details;
+
+    const {description = {}} = data;
+
+    if (!location || !validateObject(location) || !Object.keys(location))
+      return null;
+
+    dispatch(
+      setOrigin({
+        location,
+        description,
+      }),
+    );
+  };
+
+  const renderOptions = ({item}) => {
+    return (
+      <Styles.Wrapper
+        onPress={() => handlePress(item.screen)}
+        disabled={isDisabled}>
+        {({pressed}) => (
+          <Styles.InnerWrapper pressed={pressed}>
+            <Styles.ImageComp source={item.image} resizeMode="contain" />
+            <Styles.TextComp>{item.title}</Styles.TextComp>
+            <Styles.IconComp name="right" type="antdesign" />
+          </Styles.InnerWrapper>
+        )}
+      </Styles.Wrapper>
+    );
+  };
 
   return (
     <>
-      <GooglePlacesAutocomplete
+      <GooglePlacesInput
         placeholder="Search | Here"
         nearbyPlacesAPI={'GooglePlacesSearch'}
-        query={{
-          key: GOOGLE_API_KEY,
-          language: 'en',
-        }}
+        fetchDetails={true}
         debounce={400}
-        styles={{textInput: {fontSize: 18}}}
+        returnKeyType={'search'}
+        enablePoweredByContainer={false}
+        onPress={handleDispatch}
+        onFail={error => console.log('ERROR! ', error)}
+        onNotFound={() => console.log('Sorry, no results!')}
       />
       <FlatList
         data={data}
+        contentContainerStyle={{flex: 1, justifyContent: 'center'}}
         keyExtractor={item => item.id}
         horizontal
         renderItem={renderOptions}

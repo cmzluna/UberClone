@@ -7,7 +7,7 @@ export const selectDestination = state => {
 
   if (!navigation || !validateObject(navigation)) return {};
 
-  const {destination} = navigation;
+  const {destination = {}} = navigation;
 
   return destination;
 };

@@ -3,23 +3,26 @@ import {Pressable, View, Image, Text} from 'react-native';
 import {Icon} from '@rneui/themed';
 
 const Wrapper = styled(Pressable)`
-  height: 200px;
+  height: 120px;
   background-color: #ffefc7;
-  padding: 4px;
-  margin: 14px;
-  border-radius: 5px;
+  padding: 0px;
+  margin: 12px;
+  width: 50%;
   border: 1px solid #efc865;
+  border-radius: 10px;
 `;
 
-const InnerWrapper = styled(View)`
+const CarWrapper = styled(View)`
+  flex: 1;
   background-color: ${({pressed}) => (pressed ? '#efc865' : '#ffefc7')};
   padding: 5px;
   align-items: center;
 `;
 
 const ImageComp = styled(Image)`
+  flex: 1;
   width: 120px;
-  height: 120px;
+  height: 100px;
   color: blue;
 `;
 
@@ -30,7 +33,7 @@ const IconComp = styled(Icon)`
   color: white;
   border-radius: 20px;
   background-color: #efc865;
-  margin-top: 10px;
+  margin-top: 0px;
 `;
 
-export default {Wrapper, InnerWrapper, ImageComp, TextComp, IconComp};
+export default {Wrapper, CarWrapper, ImageComp, TextComp, IconComp};

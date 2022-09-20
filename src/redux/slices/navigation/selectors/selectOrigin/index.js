@@ -7,7 +7,7 @@ export const selectOrigin = state => {
 
   if (!navigation || !validateObject(navigation)) return {};
 
-  const {origin} = navigation;
+  const {origin = {}} = navigation;
 
   return origin;
 };

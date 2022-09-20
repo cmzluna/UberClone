@@ -63,4 +63,4 @@ buck-out/
 /vendor/bundle/
 
 # environment variables
-env.json
+.env
