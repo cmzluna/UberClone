@@ -6,6 +6,7 @@ import {selectOrigin} from 'src/redux/slices/navigation/selectors/selectOrigin';
 import {selectDestination} from 'src/redux/slices/navigation/selectors/selectDestination';
 import MapViewDirections from 'react-native-maps-directions';
 import {GOOGLE_API_KEY} from '@env';
+import getCurrentLocation from 'src/utils/getCurrentLocation';
 
 const styles = StyleSheet.create({
   map: {
@@ -62,6 +63,11 @@ const Map = () => {
     mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
       edgePadding: {top: 200, right: 200, bottom: 20, left: 200},
     });
+
+    const {
+      coords: {latitude, longitude},
+    } = getCurrentLocation();
+    console.log('LOCATION = > ', latitude, longitude);
   }, [origin, destination]);
 
   return (

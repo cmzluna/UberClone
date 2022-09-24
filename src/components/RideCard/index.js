@@ -9,19 +9,19 @@ const RideCard = () => {
       id: '1',
       title: 'Standard',
       multiplierIndex: 1,
-      image: require('assets/car_standard.png'),
+      image: require('../../assets/car_standard.png'),
     },
     {
       id: '2',
       title: 'Platinum',
       multiplierIndex: 1.2,
-      image: require('assets/car_platinum.png'),
+      image: require('../../assets/car_platinum.png'),
     },
     {
       id: '3',
       title: 'Gold',
       multiplierIndex: 1.5,
-      image: require('assets/car_gold.png'),
+      image: require('../../assets/car_gold.png'),
     },
   ];
 
