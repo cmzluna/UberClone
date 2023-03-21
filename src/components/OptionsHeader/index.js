@@ -60,9 +60,7 @@ const OptionsHeader = () => {
 
   const renderOptions = ({item}) => {
     return (
-      <Styles.Wrapper
-        onPress={() => handlePress(item.screen)}
-        disabled={isDisabled}>
+      <Styles.Wrapper onPress={() => handlePress(item.screen)} disabled={false}>
         {({pressed}) => (
           <Styles.InnerWrapper pressed={pressed}>
             <Styles.ImageComp source={item.image} resizeMode="contain" />
